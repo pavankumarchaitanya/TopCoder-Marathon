@@ -1,5 +1,7 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class GraphImpl implements Graph {
 
@@ -9,29 +11,6 @@ public class GraphImpl implements Graph {
 	// The data structure represents an edge connecting Node 1 and Node 2 of
 	// edgeWeight
 	Map<Node, Map<Node, Integer>> nodeMap = new HashMap<>();
-
-	@Override
-	public void addNode(Node node) {
-		Map<Node, Integer> map;
-		if (!this.containsNode(node)) {
-			map = new HashMap<>();
-			nodeMap.put(node, map);
-		}
-	}
-
-	@Override
-	public void removeNode(Node node) {
-
-		for (Node tempNode : nodeMap.keySet()) {
-			{
-				Map<Node, Integer> map = nodeMap.get(tempNode);
-				map.remove(node);
-			}
-
-		}
-
-		nodeMap.remove(node);
-	}
 
 	@Override
 	public void addEdge(Edge edge) {
@@ -44,10 +23,27 @@ public class GraphImpl implements Graph {
 	}
 
 	@Override
-	public void removeEdge(Edge edge) {
+	public void addNode(Node node) {
+		Map<Node, Integer> map;
+		if (!this.containsNode(node)) {
+			map = new HashMap<>();
+			nodeMap.put(node, map);
+		}
+	}
+
+	@Override
+	public boolean containsEdge(Edge edge) {
 		Node fromNode = edge.getFromNode();
 		Node toNode = edge.getToNode();
-		nodeMap.get(fromNode).remove(toNode);
+		if (nodeMap.get(fromNode) != null) {
+			return nodeMap.get(fromNode).containsKey(toNode);
+		} else
+			return false;
+	}
+
+	@Override
+	public boolean containsNode(Node node) {
+		return nodeMap.containsKey(node);
 	}
 
 	@Override
@@ -76,20 +72,30 @@ public class GraphImpl implements Graph {
 		return null;
 
 	}
-
 	@Override
-	public boolean containsNode(Node node) {
-		return nodeMap.containsKey(node);
+	public Set<Node> getNeighboursOfNode(Node node){
+		Set<Node > neighbourSet = new HashSet<Node>();
+		
+		return neighbourSet;
+	}
+	public void removeEdge(Edge edge) {
+		Node fromNode = edge.getFromNode();
+		Node toNode = edge.getToNode();
+		nodeMap.get(fromNode).remove(toNode);
 	}
 
 	@Override
-	public boolean containsEdge(Edge edge) {
-		Node fromNode = edge.getFromNode();
-		Node toNode = edge.getToNode();
-		if (nodeMap.get(fromNode) != null) {
-			return nodeMap.get(fromNode).containsKey(toNode);
-		} else
-			return false;
+	public void removeNode(Node node) {
+
+		for (Node tempNode : nodeMap.keySet()) {
+			{
+				Map<Node, Integer> map = nodeMap.get(tempNode);
+				map.remove(node);
+			}
+
+		}
+
+		nodeMap.remove(node);
 	}
 
 }
