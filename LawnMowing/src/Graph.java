@@ -1,11 +1,13 @@
+import java.util.Set;
 
 public interface Graph {
-	void addNode(Node node);
-	void removeNode(Node node);
 	void addEdge(Edge edge);
-	void removeEdge(Edge edge);
+	void addNode(Node node);
+	boolean containsEdge(Edge edge);
+	boolean containsNode(Node node);
 	Edge getEdge(Node node1, Node node2);
 	Node getNode(int nodeID);
-	boolean containsNode(Node node);
-	boolean containsEdge(Edge edge);
+	void removeEdge(Edge edge);
+	void removeNode(Node node);
+	Set<Node> getNeighboursOfNode(Node node);
 }
